@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/0a99374ff4.js" crossorigin="anonymous"></script>
+  <title>Denúncia Comunitária</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0b0b0b;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 460px;
+    }
+
+    .cartao {
+      background: #141414;
+      padding: 40px 30px;
+      border-radius: 24px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+      text-align: center;
+    }
+
+    .icone-principal {
+      width: 90px;
+      height: 90px;
+      background: linear-gradient(135deg, #1fa38a, #0f6e56);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-size: 40px;
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .subtitulo {
+      color: #aaa;
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .badge-anonimo {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #0f3d30;
+      color: #1fa38a;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 16px;
+      border-radius: 20px;
+      margin-bottom: 30px;
+      border: 1px solid #1fa38a44;
+    }
+
+    .botao-principal {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      border-radius: 30px;
+      text-align: center;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 17px;
+      background: #1fa38a;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      margin-bottom: 12px;
+    }
+    .botao-principal:hover { background: #17806c; transform: translateY(-1px); }
+    .botao-principal:active { transform: translateY(0); }
+
+    .botao-secundario {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      border-radius: 30px;
+      text-align: center;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      background: #1e1e1e;
+      color: #aaa;
+      border: 1px solid #333;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .botao-secundario:hover { background: #2a2a2a; color: #fff; }
+
+    .divisor {
+      border: none;
+      border-top: 1px solid #222;
+      margin: 24px 0;
+    }
+
+    .info-privacidade {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 14px;
+      padding: 16px;
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .info-privacidade h3 {
+      font-size: 13px;
+      color: #1fa38a;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .info-privacidade ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .info-privacidade ul li {
+      font-size: 13px;
+      color: #888;
+      padding: 4px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-privacidade ul li::before {
+      content: "✓";
+      color: #1fa38a;
+      font-weight: bold;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #1fa38a;
+      color: white;
+      padding: 14px 24px;
+      border-radius: 30px;
+      font-size: 15px;
+      font-weight: 600;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+      transition: transform 0.4s ease;
+      z-index: 9999;
+      white-space: nowrap;
+    }
+    .toast.visivel { transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="cartao">
+      <div class="icone-principal"><i class="fa-solid fa-people-roof"></i></div>
+      <h1>Denúncia Comunitária</h1>
+      <p class="subtitulo">Faça denúncias sobre problemas na sua comunidade de forma rápida, fácil e segura.</p>
+
+      <div class="badge-anonimo">
+        <i class="fa-solid fa-lock"></i> 100% Anónimo e Seguro
+      </div>
+
+      <a href="Tela2_categorias.html" class="botao-principal"><i class="fa-solid fa-plus"></i> Nova Denúncia</a>
+      <a href="Tela4_minhas_denuncias.html" class="botao-secundario"><i class="fa-solid fa-clipboard-list"></i> Ver Minhas Denúncias</a>
+
+      <hr class="divisor">
+
+      <div class="info-privacidade">
+        <h3><i class="fa-solid fa-shield-halved"></i> A sua privacidade é garantida</h3>
+        <ul>
+          <li>O seu nome nunca é solicitado</li>
+          <li>Nenhum dado pessoal é recolhido</li>
+          <li>Os seus anexos não contêm metadados</li>
+          <li>As denúncias são totalmente confidenciais</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    function mostrarToast(mensagem, tipo) {
+      const toast = document.getElementById('toast');
+      toast.textContent = mensagem;
+      toast.style.background = tipo === 'erro' ? '#c0392b' : '#1fa38a';
+      toast.classList.add('visivel');
+      setTimeout(() => toast.classList.remove('visivel'), 3000);
+    }
+  </script>
+</body>
+</html>

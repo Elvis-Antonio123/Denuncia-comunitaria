@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/0a99374ff4.js" crossorigin="anonymous"></script>
+  <title>Nova Denúncia</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0b0b0b;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 460px;
+      margin-top: 20px;
+    }
+
+    /* Barra de progresso */
+    .progresso-wrapper {
+      margin-bottom: 20px;
+    }
+
+    .progresso-topo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .progresso-label { font-size: 13px; color: #888; }
+    .progresso-passo { font-size: 13px; color: #1fa38a; font-weight: 600; }
+
+    .barra-progresso {
+      height: 5px;
+      background: #222;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .barra-progresso-fill {
+      height: 100%;
+      width: 66%;
+      background: #1fa38a;
+      border-radius: 10px;
+    }
+
+    .botao-voltar {
+      background: none;
+      border: none;
+      color: #1fa38a;
+      font-size: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 16px;
+      padding: 0;
+      font-weight: 600;
+    }
+
+    .cartao {
+      background: #141414;
+      padding: 28px;
+      border-radius: 24px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+    }
+
+    h2 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .subtitulo {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 22px;
+    }
+
+    /* Chips de categorias selecionadas */
+    .categorias-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+
+    .chip {
+      background: #0f3d30;
+      color: #1fa38a;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid #1fa38a44;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      color: #aaa;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    textarea {
+      width: 100%;
+      background: #1c1c1c;
+      border: 1.5px solid #2a2a2a;
+      border-radius: 14px;
+      padding: 14px;
+      color: #fff;
+      font-size: 15px;
+      min-height: 150px;
+      resize: vertical;
+      transition: border-color 0.2s;
+      font-family: inherit;
+      margin-bottom: 6px;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: #1fa38a;
+    }
+
+    .contador-chars {
+      font-size: 12px;
+      color: #555;
+      text-align: right;
+      margin-bottom: 20px;
+    }
+
+    .contador-chars.quase { color: #f39c12; }
+    .contador-chars.limite { color: #e74c3c; }
+
+    /* Upload de arquivo */
+    .area-upload {
+      border: 2px dashed #333;
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-bottom: 8px;
+    }
+
+    .area-upload:hover {
+      border-color: #1fa38a;
+      background: #0f3d3011;
+    }
+
+    .area-upload.tem-arquivo {
+      border-style: solid;
+      border-color: #1fa38a;
+      background: #0f3d30;
+    }
+
+    .area-upload-icone { font-size: 28px; margin-bottom: 8px; }
+
+    .area-upload-texto {
+      font-size: 14px;
+      color: #888;
+    }
+
+    .area-upload.tem-arquivo .area-upload-texto {
+      color: #1fa38a;
+    }
+
+    #input-arquivo { display: none; }
+
+    /* Pré-visualização */
+    .preview-imagem {
+      display: none;
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+
+    .preview-imagem.visivel { display: block; }
+
+    .botao-remover-arquivo {
+      background: none;
+      border: none;
+      color: #e74c3c;
+      font-size: 13px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      padding: 0;
+      display: none;
+    }
+
+    .botao-remover-arquivo.visivel { display: block; }
+
+    .aviso-campo {
+      background: #2a1a1a;
+      border: 1px solid #c0392b44;
+      color: #e74c3c;
+      font-size: 13px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    .botao-principal {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      border-radius: 30px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 16px;
+      background: #1fa38a;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      margin-bottom: 12px;
+    }
+
+    .botao-principal:hover { background: #17806c; transform: translateY(-1px); }
+    .botao-principal:active { transform: translateY(0); }
+
+    .botao-principal:disabled {
+      background: #555;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .botao-secundario {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      border-radius: 30px;
+      text-align: center;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      background: #1e1e1e;
+      color: #aaa;
+      border: 1px solid #333;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .botao-secundario:hover { background: #2a2a2a; color: #fff; }
+
+    /* Loading spinner no botão */
+    .spinner {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 3px solid #ffffff55;
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: girar 0.8s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+
+    @keyframes girar {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(120px);
+      color: white;
+      padding: 14px 24px;
+      border-radius: 30px;
+      font-size: 15px;
+      font-weight: 600;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+      transition: transform 0.4s ease;
+      z-index: 9999;
+      white-space: nowrap;
+    }
+
+    .toast.visivel { transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="progresso-wrapper">
+      <div class="progresso-topo">
+        <span class="progresso-label">Nova Denúncia</span>
+        <span class="progresso-passo">Passo 2 de 3</span>
+      </div>
+      <div class="barra-progresso">
+        <div class="barra-progresso-fill"></div>
+      </div>
+    </div>
+
+    <button onclick="history.back()" class="botao-voltar">← Voltar</button>
+
+    <div class="cartao">
+      <h2>Detalhes da Denúncia</h2>
+      <p class="subtitulo">Descreva o problema com o máximo de detalhe possível</p>
+
+      <!-- Chips das categorias -->
+      <div class="categorias-chips" id="chips-categorias"></div>
+
+      <!-- Aviso de erro -->
+      <div class="aviso-campo" id="aviso-descricao"><i class="fa-solid fa-triangle-exclamation"></i> Por favor, descreva o problema antes de continuar.</div>
+
+      <label>Descrição do problema *</label>
+      <textarea
+        id="descricao"
+        placeholder="Ex: Há um monte de lixo acumulado na Rua das Flores, esquina com a Av. Principal. O lixo está lá há mais de uma semana e está a causar mau cheiro..."
+        maxlength="1000"
+        oninput="atualizarContador()"
+      ></textarea>
+      <div class="contador-chars" id="contador-chars">0 / 1000 caracteres</div>
+
+      <label>Imagem ou vídeo (opcional)</label>
+      <div class="area-upload" id="area-upload" onclick="document.getElementById('input-arquivo').click()">
+        <div class="area-upload-icone"><i class="fa-solid fa-paperclip"></i></div>
+        <div class="area-upload-texto" id="texto-upload">Clique para adicionar uma imagem ou vídeo</div>
+      </div>
+      <input type="file" id="input-arquivo" accept="image/*,video/*" onchange="previsualizarArquivo(event)">
+
+      <img id="preview-imagem" class="preview-imagem" alt="Pré-visualização">
+      <button class="botao-remover-arquivo" id="botao-remover" onclick="removerArquivo()">✕ Remover ficheiro</button>
+
+      <button class="botao-principal" id="botao-enviar" onclick="enviarDenuncia()">Enviar Denúncia</button>
+      <a href="Tela4_minhas_denuncias.html" class="botao-secundario"><i class="fa-solid fa-clipboard-list"></i> Ver Minhas Denúncias</a>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const MAX_CHARS = 1000;
+
+    // Carregar chips de categorias
+    function carregarChips() {
+      const cats = JSON.parse(localStorage.getItem('categoriasSelecionadas')) || [];
+      const container = document.getElementById('chips-categorias');
+      if (cats.length === 0) {
+        container.innerHTML = '<span style="font-size:13px;color:#888;">Nenhuma categoria selecionada</span>';
+        return;
+      }
+      container.innerHTML = cats.map(c => `<span class="chip">${c}</span>`).join('');
+    }
+
+    // Contador de caracteres
+    function atualizarContador() {
+      const val = document.getElementById('descricao').value.length;
+      const el = document.getElementById('contador-chars');
+      el.textContent = val + ' / ' + MAX_CHARS + ' caracteres';
+      el.className = 'contador-chars';
+      if (val > 800) el.classList.add('quase');
+      if (val >= MAX_CHARS) el.classList.add('limite');
+    }
+
+    // Pré-visualizar arquivo
+    function previsualizarArquivo(event) {
+      const arquivo = event.target.files[0];
+      if (!arquivo) return;
+
+      const area = document.getElementById('area-upload');
+      const textoUpload = document.getElementById('texto-upload');
+      const preview = document.getElementById('preview-imagem');
+      const botaoRemover = document.getElementById('botao-remover');
+
+      textoUpload.textContent = '📁 ' + arquivo.name;
+      area.classList.add('tem-arquivo');
+      botaoRemover.classList.add('visivel');
+
+      if (arquivo.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          preview.src = e.target.result;
+          preview.classList.add('visivel');
+        };
+        reader.readAsDataURL(arquivo);
+      } else {
+        preview.classList.remove('visivel');
+      }
+    }
+
+    // Remover arquivo
+    function removerArquivo() {
+      document.getElementById('input-arquivo').value = '';
+      document.getElementById('preview-imagem').classList.remove('visivel');
+      document.getElementById('preview-imagem').src = '';
+      document.getElementById('botao-remover').classList.remove('visivel');
+      document.getElementById('area-upload').classList.remove('tem-arquivo');
+      document.getElementById('texto-upload').textContent = 'Clique para adicionar uma imagem ou vídeo';
+    }
+
+    // Enviar denúncia
+    function enviarDenuncia() {
+      const descricao = document.getElementById('descricao').value.trim();
+      const aviso = document.getElementById('aviso-descricao');
+
+      if (!descricao || descricao.length < 10) {
+        aviso.style.display = 'block';
+        document.getElementById('descricao').focus();
+        return;
+      }
+
+      aviso.style.display = 'none';
+
+      const botao = document.getElementById('botao-enviar');
+      botao.disabled = true;
+      botao.innerHTML = '<span class="spinner"></span> A enviar...';
+
+      const inputAnexo = document.getElementById('input-arquivo');
+      const nomeAnexo = inputAnexo.files.length > 0 ? inputAnexo.files[0].name : null;
+      const categorias = JSON.parse(localStorage.getItem('categoriasSelecionadas')) || [];
+
+      const protocolo = 'DEN-' + new Date().getFullYear() + '-' + String(Date.now()).slice(-5);
+
+      const novaDenuncia = {
+        id: Date.now(),
+        protocolo: protocolo,
+        data: new Date().toLocaleDateString('pt-PT'),
+        hora: new Date().toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' }),
+        categorias: categorias,
+        descricao: descricao,
+        anexo: nomeAnexo,
+        status: "Em análise",
+        cor: "amarelo"
+      };
+
+      setTimeout(() => {
+        let denuncias = JSON.parse(localStorage.getItem('minhasDenuncias')) || [];
+        denuncias.unshift(novaDenuncia);
+        localStorage.setItem('minhasDenuncias', JSON.stringify(denuncias));
+        localStorage.removeItem('categoriasSelecionadas');
+
+        mostrarToast('✅ Denúncia enviada! Protocolo: ' + protocolo, 'sucesso');
+
+        setTimeout(() => {
+          window.location.href = "Tela4_minhas_denuncias.html";
+        }, 2000);
+      }, 1200);
+    }
+
+    // Toast
+    function mostrarToast(msg, tipo) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.background = tipo === 'erro' ? '#c0392b' : '#1fa38a';
+      t.classList.add('visivel');
+      setTimeout(() => t.classList.remove('visivel'), 4000);
+    }
+
+    carregarChips();
+  </script>
+</body>
+</html>
